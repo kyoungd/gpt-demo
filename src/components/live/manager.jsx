@@ -1,3 +1,5 @@
+import RecordRTC, { StereoAudioRecorder } from 'recordrtc';
+
 // required dom elements
 import GetNextMessageSafe from './nextMessage';
 import Speak from './speak';
@@ -83,7 +85,7 @@ async function LiveTranascription (setLiveTransaction) {
                     }`;
                 }
             }
-            setLiveTransaction('transcript', msg);
+            setLiveTransaction(msg);
             states.SetText(msg);
             if (!isCommunicatingWithServer && states.IsItTimeToRespond) {
                 isCommunicatingWithServer = true;

@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import LiveTranascription  from "./live/manager";
 
 const initialState = {
+  transcription: "",
   name: "",
   phone: "",
   message: "",
 };
 
 export const Contact = (props) => {
-  const [{ name, phone, message }, setState] = useState(initialState);
+  const [{ name, phone, message, transcription }, setState] = useState(initialState);
 
-  const updateValue = (name, value) => {
-    setState((prevState) => ({ ...prevState, [name]: value }));
+  const updateTranscription = (value) => {
+    setState((prevState) => ({ ...prevState, transcription: value }));
   }
 
   const handleChange = (e) => {
@@ -24,8 +25,9 @@ export const Contact = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name, phone, message);
+    console.log(name, phone, message, transcription);
   };
+
   return (
     <div>
       <div id="contact">
@@ -47,6 +49,7 @@ export const Contact = (props) => {
                     name="transcript"
                     className="form-control"
                     placeholder="live transcript"
+                    value={transcription}
                     onChange={handleChange}
                   />
                   <p className="help-block text-danger"></p>
@@ -60,6 +63,7 @@ export const Contact = (props) => {
                         name="name"
                         className="form-control"
                         placeholder="Name"
+                        value={name}
                         required
                         onChange={handleChange}
                       />
@@ -74,6 +78,7 @@ export const Contact = (props) => {
                         name="phone"
                         className="form-control"
                         placeholder="Phone Number"
+                        value={phone}
                         required
                         onChange={handleChange}
                       />
@@ -88,13 +93,14 @@ export const Contact = (props) => {
                     className="form-control"
                     rows="6"
                     placeholder="Message"
+                    value={message}
                     required
                     onChange={handleChange}
                   ></textarea>
                   <p className="help-block text-danger"></p>
                 </div>
                 <div id="success"></div>
-                <button type="submit" className="btn btn-custom btn-lg" onClick={() => LiveTranascription(updateValue)} >
+                <button type="submit" className="btn btn-custom btn-lg" onClick={() => LiveTranascription(updateTranscription)} >
                   Talk to our AI
                 </button>
               </form>
