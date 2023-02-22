@@ -203,6 +203,10 @@ a:focus,
   outline: none;
   outline-offset: none;
 }
+.btn-on {
+  background-color: #fab283 !important;
+  color: #fff;
+}
 /* Header Section */
 .intro {
   display: table;

@@ -13,6 +13,9 @@ let callObject;
 let states;
 
 let IsTalking = false;
+let doItOnce = true;
+let isCommunicatingWithServer = false;
+
 
 function Talk(text) {
     IsTalking = false;
@@ -22,7 +25,11 @@ function Talk(text) {
     });
   }
 
-let doItOnce = true;
+function setCurrentStates(gpt3s, assignState) {
+    assignState("name", gpt3s.find(gpt => gpt.id === 201).a);
+    assignState("phone", gpt3s.find(gpt => gpt.id === 202).a);
+    assignState("message", gpt3s.find(gpt => gpt.id === 203).a);
+}
 
 async function initializeOnce(doIt) {
     if (doIt) {
@@ -38,11 +45,17 @@ async function initializeOnce(doIt) {
     return false;
 }
 
+function initializeThisState() {
+    callObject = null;
+    states = null;
+    IsTalking = false;
+    doItOnce = true;
+    isCommunicatingWithServer = false;
+}
 // singleton
-let isCommunicatingWithServer = false;
 
 // runs real-time transcription and handles global variables
-async function LiveTranascription (setLiveTransaction) {
+async function LiveTranascription (assignState, clearState) {
     if (isRecording) {
         if (socket) {
             socket.send(JSON.stringify({terminate_session: true}));
@@ -55,6 +68,8 @@ async function LiveTranascription (setLiveTransaction) {
             recorder = null;
         }
     } else {
+        clearState();
+        initializeThisState();
         doItOnce = doItOnce ? await initializeOnce(true) : false;
         const response = await fetch(process.env.REACT_APP_TOKEN_URL); // get temp session token from server.js (backend)
         const data = await response.json();
@@ -85,7 +100,7 @@ async function LiveTranascription (setLiveTransaction) {
                     }`;
                 }
             }
-            setLiveTransaction(msg);
+            assignState("transcription", msg);
             states.SetText(msg);
             if (!isCommunicatingWithServer && states.IsItTimeToRespond) {
                 isCommunicatingWithServer = true;
@@ -95,6 +110,7 @@ async function LiveTranascription (setLiveTransaction) {
                   const result = await GetNextMessageSafe(callObject, states.Message);
                   if (result.success) {
                     callObject = result.callObject;
+                    setCurrentStates(result.callObject.state.gpt3, assignState)
                     await Talk(result.message);
                   }
                   else

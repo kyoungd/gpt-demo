@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import React from "react";
 import LiveTranascription  from "./live/manager";
 
@@ -6,14 +6,16 @@ const initialState = {
   transcription: "",
   name: "",
   phone: "",
-  message: "",
+  message: ""
 };
 
 export const Contact = (props) => {
   const [{ name, phone, message, transcription }, setState] = useState(initialState);
+  const [isLive, setIsLive] = useState(false);
 
-  const updateTranscription = (value) => {
-    setState((prevState) => ({ ...prevState, transcription: value }));
+  const assignState = (fname, value) => {
+    console.log('assignState: ', fname, value);
+    setState((prevState) => ({ ...prevState, [fname]: value }));
   }
 
   const handleChange = (e) => {
@@ -22,11 +24,6 @@ export const Contact = (props) => {
   };
 
   const clearState = () => setState({ ...initialState });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(name, phone, message, transcription);
-  };
 
   return (
     <div>
@@ -100,7 +97,14 @@ export const Contact = (props) => {
                   <p className="help-block text-danger"></p>
                 </div>
                 <div id="success"></div>
-                <button type="submit" className="btn btn-custom btn-lg" onClick={() => LiveTranascription(updateTranscription)} >
+                <button 
+                  type="submit" 
+                  className={isLive ? 'btn btn-custom btn-lg btn-on' : 'btn btn-custom btn-lg'} 
+                  onClick={() => {
+                    setIsLive(!isLive);
+                    LiveTranascription(assignState, clearState);
+                  }}
+                >
                   Talk to our AI
                 </button>
               </form>
