@@ -14,7 +14,6 @@ export const Contact = (props) => {
   const [isLive, setIsLive] = useState(false);
 
   const assignState = (fname, value) => {
-    console.log('assignState: ', fname, value);
     setState((prevState) => ({ ...prevState, [fname]: value }));
   }
 
