@@ -88,46 +88,49 @@ async function LiveTranascription (assignState, clearState) {
         // handle incoming messages to display transcription to the DOM
         let texts = {};
         socket.onmessage = (message) => {
-            if (!IsTalking)
-                return;
-            let msg = '';
-            const res = JSON.parse(message.data);
-            texts[res.audio_start] = res.text;
-            const keys = Object.keys(texts);
-            keys.sort((a, b) => a - b);
-            for (const key of keys) {
-                if (texts[key]) {
-                    msg += ` ${
-                        texts[key]
-                    }`;
+            if (IsTalking) {
+                let msg = '';
+                const res = JSON.parse(message.data);
+                texts[res.audio_start] = res.text;
+                const keys = Object.keys(texts);
+                keys.sort((a, b) => a - b);
+                for (const key of keys) {
+                    if (texts[key]) {
+                        msg += ` ${
+                            texts[key]
+                        }`;
+                    }
                 }
+                assignState("transcription", msg);
+                states.SetText(msg);
+                if (!isCommunicatingWithServer && states.IsItTimeToRespond) {
+                    isCommunicatingWithServer = true;
+                    void async function () {
+                      const reply = callObject.getters.Reply;
+                      await Talk(reply);
+                      const result = await GetNextMessageSafe(callObject, states.Message);
+                      if (result.success) {
+                        callObject = result.callObject;
+                        setCurrentStates(result.callObject.state.gpt3, assignState)
+                        await Talk(result.message);
+                        if (callObject.getters.IsPhoneCallEnd) {
+                            console.log('call ended.');
+                            return;
+                        }
+                      }
+                      else
+                        console.log('Error getting call state.');
+                      states.Reset();
+                      texts = {}
+                      isCommunicatingWithServer = false;
+                    }().catch(err => {
+                        states.Reset();
+                        isCommunicatingWithServer = false;
+                        texts = {}
+                        console.log(err)
+                    });
+                }    
             }
-            assignState("transcription", msg);
-            states.SetText(msg);
-            if (!isCommunicatingWithServer && states.IsItTimeToRespond) {
-                isCommunicatingWithServer = true;
-                void async function () {
-                  const reply = callObject.getters.Reply;
-                  await Talk(reply);
-                  const result = await GetNextMessageSafe(callObject, states.Message);
-                  if (result.success) {
-                    callObject = result.callObject;
-                    setCurrentStates(result.callObject.state.gpt3, assignState)
-                    await Talk(result.message);
-                  }
-                  else
-                    console.log('Error getting call state.');
-                  states.Reset();
-                  texts = {}
-                  isCommunicatingWithServer = false;
-                }().catch(err => {
-                    states.Reset();
-                    isCommunicatingWithServer = false;
-                    texts = {}
-                    console.log(err)
-                });
-              }
-    
         };
 
         socket.onerror = (event) => {
