@@ -32,7 +32,7 @@ export const Contact = (props) => {
           <div className="col-md-8">
             <div className="row">
               <div className="section-title">
-                <h2>Get In Touch</h2>
+                <h2>Get In Touch - use microphone</h2>
                 <p>
                   Click on the <strong>TALK TO OUR AI</strong> button to get in touch with us.
                   The forms will be filled out by our AI and sent to us.
