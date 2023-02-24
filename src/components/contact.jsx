@@ -52,7 +52,7 @@ export const Contact = (props) => {
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <div className="form-group">
+                    <div className="form-group" hidden={ (name.length < 2) || name.toLocaleLowerCase().indexOf('did not say') >= 0 }>
                       <input
                         type="text"
                         id="name"
@@ -67,7 +67,7 @@ export const Contact = (props) => {
                     </div>
                   </div>
                   <div className="col-md-6">
-                    <div className="form-group">
+                    <div className="form-group" hidden={ (phone.length < 2) || phone.toLocaleLowerCase().indexOf('did not say') >= 0 }>
                       <input
                         type="phone"
                         id="phone"
@@ -82,7 +82,7 @@ export const Contact = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="form-group">
+                <div className="form-group" hidden={ (message.length < 2 || message.toLocaleLowerCase().indexOf('did not say') >= 0 ) }>
                   <textarea
                     name="message"
                     id="message"
