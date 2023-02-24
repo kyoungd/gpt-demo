@@ -39,15 +39,15 @@ export const Contact = (props) => {
               </div>
               <form name="sentMessage">
                 <div className="form-group">
-                  <input
-                    type="text"
-                    id="transcript"
-                    name="transcript"
-                    className="form-control"
-                    placeholder="live transcript"
-                    value={transcription}
-                    onChange={handleChange}
-                  />
+                  <textarea
+                      name="transcript"
+                      id="transcript"
+                      className="form-control"
+                      rows="3"
+                      placeholder="Live Transcript"
+                      value={transcription}
+                      onChange={handleChange}
+                  ></textarea>
                   <p className="help-block text-danger"></p>
                 </div>
                 <div className="row">

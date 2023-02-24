@@ -115,6 +115,7 @@ async function LiveTranascription (assignState, clearState) {
                         await Talk(result.message);
                         if (callObject.getters.IsPhoneCallEnd) {
                             console.log('call ended.');
+                            isRecording = false;
                             return;
                         }
                       }
