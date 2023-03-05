@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import React from "react";
 import LiveTranascription  from "./live/manager";
 
@@ -24,6 +24,9 @@ export const Contact = (props) => {
 
   const clearState = () => setState({ ...initialState });
 
+  const audioElement = useRef();
+  // convert string to boolean
+  const isUseAudioElement = process.env.REACT_APP_IS_USE_AUDIO_ELMEMENT === 'true';
   return (
     <div>
       <div id="contact">
@@ -36,6 +39,7 @@ export const Contact = (props) => {
                   Click on the <strong>TALK TO OUR AI</strong> button to get in touch with us.
                   The forms will be filled out by our AI and sent to us.
                 </p>
+                <audio id="audio-element" type="audio/mpeg" ref={audioElement} muted={false} ></audio>
               </div>
               <form name="sentMessage">
                 <div className="form-group">
@@ -100,8 +104,9 @@ export const Contact = (props) => {
                   type="submit" 
                   className={isLive ? 'btn btn-custom btn-lg btn-on' : 'btn btn-custom btn-lg'} 
                   onClick={() => {
+                    if (isUseAudioElement) audioElement.current.play();
                     setIsLive(!isLive);
-                    LiveTranascription(assignState, clearState);
+                    LiveTranascription(assignState, clearState, isUseAudioElement ? audioElement : null);
                   }}
                 >
                   Talk to our AI

@@ -3,6 +3,7 @@ import RecordRTC, { StereoAudioRecorder } from 'recordrtc';
 // required dom elements
 import GetNextMessageSafe from './nextMessage';
 import Speak from './speak';
+import Speech from './speech';
 import LocalState from './states';
 
 // set initial state of application variables
@@ -15,15 +16,30 @@ let states;
 let IsTalking = false;
 let doItOnce = true;
 let isCommunicatingWithServer = false;
+let audioElement = null;
 
-
-function Talk(text) {
+function talkSpeaker(text) {
     IsTalking = false;
     Speak(text, () => {
         console.log('.......done speaking');
         IsTalking = true;
     });
   }
+
+  function talkNeural(audioElement, text) {
+    IsTalking = false;
+    Speech(audioElement, () => {
+        console.log('.......done speaking');
+        IsTalking = true;
+    }, text);
+  }
+
+function Talk(text) {
+    if (audioElement === null)
+        talkSpeaker(text);
+    else
+        talkNeural(audioElement, text);
+}
 
 function setCurrentStates(gpt3s, assignState) {
     assignState("name", gpt3s.find(gpt => gpt.id === 201).a);
@@ -57,7 +73,8 @@ function initializeThisState() {
 const sample_rate = 32000;
 
 // runs real-time transcription and handles global variables
-async function LiveTranascription (assignState, clearState) {
+async function LiveTranascription (assignState, clearState, audioElem = null) {
+    audioElement = audioElem;
     if (isRecording) {
         if (socket) {
             socket.send(JSON.stringify({terminate_session: true}));
