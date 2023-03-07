@@ -5,6 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* kyd-change */
+  background-image: url('woman.jpg');
+  background-repeat: no-repeat;
+  background-position: center top;
 }
 
 code {

@@ -36,13 +36,13 @@ export const Contact = (props) => {
               <div className="section-title">
                 <h2>Get In Touch - use microphone</h2>
                 <p>
-                  Click on the <strong>TALK TO OUR AI</strong> button to get in touch with us.
-                  The forms will be filled out by our AI and sent to us.
+                  {/* Click on the <strong>TALK TO OUR AI</strong> button to get in touch with us.
+                  The forms will be filled out by our AI and sent to us. */}
                 </p>
                 <audio id="audio-element" type="audio/mpeg" ref={audioElement} muted={false} ></audio>
               </div>
               <form name="sentMessage">
-                <div className="form-group">
+                <div className="form-group" hidden={!isLive}>
                   <textarea
                       name="transcript"
                       id="transcript"
@@ -104,7 +104,7 @@ export const Contact = (props) => {
                   type="submit" 
                   className={isLive ? 'btn btn-custom btn-lg btn-on' : 'btn btn-custom btn-lg'} 
                   onClick={() => {
-                    if (isUseAudioElement) audioElement.current.play();
+                    if (isUseAudioElement) audioElement.current.autoplay=true;
                     setIsLive(!isLive);
                     LiveTranascription(assignState, clearState, isUseAudioElement ? audioElement : null);
                   }}

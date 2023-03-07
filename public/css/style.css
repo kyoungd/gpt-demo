@@ -171,8 +171,8 @@ hr {
   padding: 14px 34px;
   letter-spacing: 1px;
   margin: 0;
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 800;
   border-radius: 25px;
   transition: all 0.5s linear;
   border: 0;
@@ -464,7 +464,8 @@ header .intro-text {
 /* Contact Section */
 #contact {
   padding: 100px 0 60px;
-  background: linear-gradient(to right, #6372ff 0%, #5ca9fb 100%);
+  /* kyd-change
+  background: linear-gradient(to right, #6372ff 0%, #5ca9fb 100%); */
   color: rgba(255, 255, 255, 0.75);
 }
 #contact .section-title {
