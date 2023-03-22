@@ -6,11 +6,12 @@ const initialState = {
   transcription: "",
   name: "",
   phone: "",
-  message: ""
+  message: "",
+  appointment: ""
 };
 
 export const Contact = (props) => {
-  const [{ name, phone, message, transcription }, setState] = useState(initialState);
+  const [{ name, phone, message, appointment, transcription }, setState] = useState(initialState);
   const [isLive, setIsLive] = useState(false);
 
   const assignState = (fname, value) => {
@@ -91,12 +92,25 @@ export const Contact = (props) => {
                     name="message"
                     id="message"
                     className="form-control"
-                    rows="6"
+                    rows="3"
                     placeholder="Message"
                     value={message}
                     required
                     onChange={handleChange}
                   ></textarea>
+                  <p className="help-block text-danger"></p>
+                </div>
+                <div className="form-group" hidden={ (appointment.length < 2 || appointment.toLocaleLowerCase().indexOf('did not say') >= 0 ) }>
+                  <input
+                    type="appointment"
+                    id="appointment"
+                    name="appointment"
+                    className="form-control"
+                    placeholder="Appointment"
+                    value={appointment}
+                    required
+                    onChange={handleChange}
+                  />
                   <p className="help-block text-danger"></p>
                 </div>
                 <div id="success"></div>

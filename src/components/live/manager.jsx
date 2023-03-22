@@ -41,16 +41,19 @@ function Talk(text) {
         talkNeural(audioElement, text);
 }
 
-function setCurrentStates(gpt3s, assignState) {
-    assignState("name", gpt3s.find(gpt => gpt.id === 201).a);
-    assignState("phone", gpt3s.find(gpt => gpt.id === 202).a);
-    assignState("message", gpt3s.find(gpt => gpt.id === 203).a);
+function setCurrentStates(data, assignState) {
+    const name = data.hasOwnProperty('name') ? data.name : null;
+    const phone = data.hasOwnProperty('phone') ? data.phone : null;
+    const message = data.hasOwnProperty('message') ? data.message : null;
+    assignState("name", name);
+    assignState("phone", phone);
+    assignState("message", message);
 }
 
 async function initializeOnce(doIt) {
     if (doIt) {
         states = new LocalState();
-        const result = await GetNextMessageSafe(callObject, '', 'demo_e46ee1013e65');
+        const result = await GetNextMessageSafe(callObject, '', 'demo_e46ee1013e6a');
         if (result.success) {
             callObject = result.callObject;
             Talk(result.message);
@@ -123,14 +126,14 @@ async function LiveTranascription (assignState, clearState, audioElem = null) {
                 if (!isCommunicatingWithServer && states.IsItTimeToRespond) {
                     isCommunicatingWithServer = true;
                     void async function () {
-                      const reply = callObject.getters.Reply;
+                      const reply = callObject.filler;
                       await Talk(reply);
                       const result = await GetNextMessageSafe(callObject, states.Message);
                       if (result.success) {
                         callObject = result.callObject;
-                        setCurrentStates(result.callObject.state.gpt3, assignState)
+                        setCurrentStates(result.callObject.data, assignState)
                         await Talk(result.message);
-                        if (callObject.getters.IsPhoneCallEnd) {
+                        if (callObject.id === 0) {
                             console.log('call ended.');
                             isRecording = false;
                             return;

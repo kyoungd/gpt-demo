@@ -1,0 +1,9 @@
+[
+    {"prompt": "Today is March 1, 2023, Wednesday.  What is next Friday?", "completion": "March 3, 2023."},
+    {"prompt": "Today is March 6, 2023, Monday.  What is next Friday?", "completion": "March 10, 2023."},
+    {"prompt": "Today is March 6, 2023, Monday.  What is next Thursday?", "completion": "March 9, 2023."},
+    {"prompt": "Today is March 7, 2023, Tuesday.  What is next Thursday?", "completion": "March 9, 2023."},
+    {"prompt": "Today is March 7, 2023, Tuesday.  What is next Monday?", "completion": "March 13, 2023."},
+    {"prompt": "Today is March 7, 2023, Tuesday.  What is next Wednesday?", "completion": "March 15, 2023."},
+    {"prompt": "Today is January 3, 2023, Tuesday.  What is first week of Feburary at Thursday?", "completion": "Feburary 2, 2023"},
+]
