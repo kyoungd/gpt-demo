@@ -73,7 +73,7 @@ function initializeThisState() {
 }
 // singleton
 
-const sample_rate = 32000;
+const sample_rate = 16000;
 
 // runs real-time transcription and handles global variables
 async function LiveTranascription (assignState, clearState, audioElem = null) {
@@ -107,6 +107,7 @@ async function LiveTranascription (assignState, clearState, audioElem = null) {
 
         // handle incoming messages to display transcription to the DOM
         let texts = {};
+        let filterMesssage = ''
         socket.onmessage = (message) => {
             if (IsTalking) {
                 let msg = '';
@@ -121,8 +122,9 @@ async function LiveTranascription (assignState, clearState, audioElem = null) {
                         }`;
                     }
                 }
-                assignState("transcription", msg);
-                states.SetText(msg);
+                const msgIntent = msg.replace(filterMesssage, '');
+                assignState("transcription", msgIntent);
+                states.SetText(msgIntent);
                 if (!isCommunicatingWithServer && states.IsItTimeToRespond) {
                     isCommunicatingWithServer = true;
                     void async function () {
@@ -147,12 +149,12 @@ async function LiveTranascription (assignState, clearState, audioElem = null) {
                       else
                         console.log('Error getting call state.');
                       states.Reset();
-                      texts = {}
+                      filterMesssage = msg
                       isCommunicatingWithServer = false;
                     }().catch(err => {
                         states.Reset();
                         isCommunicatingWithServer = false;
-                        texts = {}
+                        filterMesssage = msg
                         console.log(err)
                     });
                 }    

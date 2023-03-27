@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import React from "react";
-import LiveTranascription  from "./live/manager";
+import LiveTranascription  from "./live/manager-zero";
 
 const initialState = {
   transcription: "",
