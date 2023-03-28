@@ -77,20 +77,24 @@ function initializeThisState() {
 
 const sample_rate = 16000;
 
+function recording_off() {
+    if (socket) {
+        socket.send(JSON.stringify({terminate_session: true}));
+        socket.close();
+        socket = null;
+    }
+
+    if (recorder) {
+        recorder.pauseRecording();
+        recorder = null;
+    }
+}
+
 // runs real-time transcription and handles global variables
 async function LiveTranascription (assignState, clearState, audioElem = null) {
     audioElement = audioElem;
     if (isRecording) {
-        if (socket) {
-            socket.send(JSON.stringify({terminate_session: true}));
-            socket.close();
-            socket = null;
-        }
-
-        if (recorder) {
-            recorder.pauseRecording();
-            recorder = null;
-        }
+        recording_off();
     } else {
         clearState();
         initializeThisState();
@@ -138,11 +142,7 @@ async function LiveTranascription (assignState, clearState, audioElem = null) {
                         setCurrentStates(result.callObject.data, assignState)
                         await Talk(result.message);
                         if (callObject.id === 0) {
-                            if (socket) {
-                                socket.send(JSON.stringify({terminate_session: true}));
-                                socket.close();
-                                socket = null;
-                            }
+                            recording_off();
                             console.log('call ended.');
                             isRecording = false;
                             return;
