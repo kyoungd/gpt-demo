@@ -100,7 +100,7 @@ export const Contact = (props) => {
                   ></textarea>
                   <p className="help-block text-danger"></p>
                 </div>
-                <div className="form-group" hidden={ (appointment.length < 2 || appointment.toLocaleLowerCase().indexOf('did not say') >= 0 ) }>
+                <div className="form-group" hidden={ (!appointment || appointment.length < 2 || appointment.toLocaleLowerCase().indexOf('did not say') >= 0 ) }>
                   <input
                     type="appointment"
                     id="appointment"
@@ -123,7 +123,7 @@ export const Contact = (props) => {
                     LiveTranascription(assignState, clearState, isUseAudioElement ? audioElement : null);
                   }}
                 >
-                  Talk to our AI
+                  Click to talk to our AI
                 </button>
               </form>
             </div>

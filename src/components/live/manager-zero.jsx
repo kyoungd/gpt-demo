@@ -45,9 +45,11 @@ function setCurrentStates(data, assignState) {
     const name = data.hasOwnProperty('name') ? data.name : null;
     const phone = data.hasOwnProperty('phone') ? data.phone : null;
     const message = data.hasOwnProperty('message') ? data.message : null;
+    const appointment = data.hasOwnProperty('appointment') ? data.appointment : null;
     assignState("name", name);
     assignState("phone", phone);
     assignState("message", message);
+    assignState("appointment", appointment);
 }
 
 async function initializeOnce(doIt) {
