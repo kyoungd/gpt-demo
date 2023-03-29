@@ -55,7 +55,7 @@ function setCurrentStates(data, assignState) {
 async function initializeOnce(doIt) {
     if (doIt) {
         states = new LocalState();
-        const result = await GetNextMessageSafe(callObject, '', 'demo_e46ee1013e6a');
+        const result = await GetNextMessageSafe(callObject, '', 'demo_e46ee1013e6b');
         if (result.success) {
             callObject = result.callObject;
             Talk(result.message);

@@ -5,7 +5,7 @@ async function GetNextMessageSafe(gblObject, userInput=null, template=null) {
   try {
     if (gblObject === null) {
       callObject = { data: {
-        template: template || 'demo_e46ee1013e6a',
+        template: template || 'demo_e46ee1013e6b',
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
       }};
       console.log('callObject: ', JSON.stringify(callObject, null, 4));
